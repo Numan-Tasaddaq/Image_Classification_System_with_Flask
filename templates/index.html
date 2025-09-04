@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container py-5">
+
+    <h1 class="mb-4">🖼️ Image Classifier</h1>
+
+    <form method="post" enctype="multipart/form-data" class="mb-4">
+        <div class="mb-3">
+            <input type="file" name="file" accept="image/*" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Upload & Predict</button>
+    </form>
+
+    {% if prediction %}
+    <div class="alert alert-info">
+        <strong>Prediction:</strong> {{ prediction }}
+    </div>
+
+    <img src="{{ url_for('static', filename='../uploads/' + filename) }}" alt="Uploaded Image" class="img-thumbnail mt-3" style="max-width:200px;">
+    {% endif %}
+
+</body>
+</html>
