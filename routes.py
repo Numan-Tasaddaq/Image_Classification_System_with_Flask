@@ -1,5 +1,6 @@
 import os
 from flask import Blueprint, jsonify, render_template, request, redirect, url_for
+from model import predict_image
 
 api = Blueprint("api", __name__)
 
@@ -10,7 +11,6 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def health():
     return jsonify({"status": "ok", "service": "image-classifier-flask"})
 
-# Frontend: Home page
 @api.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
@@ -24,9 +24,9 @@ def index():
         filepath = os.path.join(UPLOAD_FOLDER, file.filename)
         file.save(filepath)
 
-        # (Later: pass to model for prediction)
-        prediction = "digit: 7 (dummy prediction)"
+        # Predict with model
+        prediction = predict_image(filepath)
 
-        return render_template("index.html", prediction=prediction, filename=file.filename)
+        return render_template("index.html", prediction=f"digit: {prediction}", filename=file.filename)
 
     return render_template("index.html", prediction=None, filename=None)
