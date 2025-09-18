@@ -18,12 +18,14 @@
     </form>
 
     {% if prediction %}
-    <div class="alert alert-info">
-        <strong>Prediction:</strong> {{ prediction }}
-    </div>
+<div class="alert alert-info">
+    <strong>Prediction:</strong> {{ prediction }}
+</div>
 
-    <img src="{{ url_for('static', filename='../uploads/' + filename) }}" alt="Uploaded Image" class="img-thumbnail mt-3" style="max-width:200px;">
-    {% endif %}
+<img src="{{ url_for('static', filename='uploads/' + filename) }}" 
+     alt="Uploaded Image" class="img-thumbnail mt-3" style="max-width:200px;">
+{% endif %}
+
 
 </body>
 </html>
