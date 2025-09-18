@@ -32,13 +32,22 @@ def index():
         file.save(filepath)
 
         try:
-            prediction = predict_image(filepath)
+            # ✅ Unpack prediction and confidence separately
+            predicted_digit, confidence_score = predict_image(filepath)
         except Exception as e:
-            prediction = f"Error: {str(e)}"
+            return render_template("index.html", filename=None, prediction="Error", confidence=None)
 
-        return render_template("index.html", filename=filename, prediction=f"Digit: {prediction}")
+        # ✅ Pass only digit as prediction, and confidence separately
+        return render_template(
+            "index.html",
+            filename=filename,
+            prediction=predicted_digit,
+            confidence=confidence_score
+        )
 
-    return render_template("index.html", filename=None, prediction=None)
+    # GET request
+    return render_template("index.html", filename=None, prediction=None, confidence=None)
+
 
 # ------------------ REST API route ------------------
 @app.route("/predict", methods=["POST"])

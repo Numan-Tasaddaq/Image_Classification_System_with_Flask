@@ -3,29 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <title>Image Classifier</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .main-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header-section {
+            background: linear-gradient(to right, #4361ee, #3a0ca3);
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+        }
+        
+        .header-section h1 {
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .header-section p {
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+        
+        .content-section {
+            padding: 2.5rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            background-color: #f8f9fa;
+            margin-bottom: 1.5rem;
+        }
+        
+        .upload-area:hover {
+            border-color: #4361ee;
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: #4361ee;
+            margin-bottom: 1rem;
+        }
+        
+        .form-control {
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #4361ee;
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        }
+        
+        .btn-primary {
+            background: #4361ee;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: #3a0ca3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .alert-info {
+            background-color: #f8f9fa;
+            border: none;
+            border-left: 4px solid #4361ee;
+            border-radius: 0.25rem;
+            color: #212529;
+            padding: 1.25rem;
+        }
+        
+        .img-thumbnail {
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: none;
+            padding: 0;
+            transition: all 0.3s;
+        }
+        
+        .img-thumbnail:hover {
+            transform: scale(1.02);
+        }
+        
+        .prediction-text {
+            font-weight: 600;
+            color: #3a0ca3;
+        }
+        
+        .confidence-container {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+        }
+        
+        .confidence-value {
+            font-weight: 600;
+            color: #4361ee;
+        }
+    </style>
 </head>
 <body class="container py-5">
 
-    <h1 class="mb-4">🖼️ Image Classifier</h1>
-
-    <form method="post" enctype="multipart/form-data" class="mb-4">
-        <div class="mb-3">
-            <input type="file" name="file" accept="image/*" class="form-control">
+    <div class="main-card">
+        <div class="header-section">
+            <h1><i class="fas fa-image me-2"></i>Image Classifier</h1>
+            <p>Upload an image to classify it using AI</p>
         </div>
-        <button type="submit" class="btn btn-primary">Upload & Predict</button>
-    </form>
+        
+        <div class="content-section">
+            <form method="post" enctype="multipart/form-data">
+                <div class="upload-area">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h4>Drag & Drop your image here</h4>
+                    <p class="text-muted">or</p>
+                    <div class="mb-3">
+                        <input type="file" name="file" accept="image/*" class="form-control">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-robot me-2"></i>Upload & Predict
+                </button>
+            </form>
 
-    {% if prediction %}
-<div class="alert alert-info">
-    <strong>Prediction:</strong> {{ prediction }}
+            {% if prediction %}
+            <div class="alert alert-info mt-4">
+               <div>
+    <strong><i class="fas fa-info-circle me-2"></i>Prediction:</strong> 
+    <span class="prediction-text">{{ prediction }}</span>
 </div>
 
-<img src="{{ url_for('static', filename='uploads/' + filename) }}" 
-     alt="Uploaded Image" class="img-thumbnail mt-3" style="max-width:200px;">
+{% if confidence %}
+<div class="confidence-container mt-2">
+    <strong>Confidence Level:</strong>
+    <span class="confidence-value">{{ (confidence * 100) | round(2) }}%</span>
+</div>
 {% endif %}
 
+            </div>
+
+            <div class="text-center mt-4">
+                <img src="{{ url_for('static', filename='uploads/' + filename) }}" 
+                     alt="Uploaded Image" class="img-thumbnail" style="max-width:300px;">
+            </div>
+            {% endif %}
+        </div>
+    </div>
 
 </body>
 </html>

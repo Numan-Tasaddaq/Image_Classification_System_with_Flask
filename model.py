@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
 from PIL import Image
+import torch.nn.functional as F  # Import for softmax
 
 # CNN definition (same as training)
 class CNN(nn.Module):
@@ -45,11 +46,18 @@ transform = transforms.Compose([
     transforms.Normalize((0.1307,), (0.3081,))
 ])
 
-def predict_image(image_path: str) -> int:
-    """Run prediction on a given image path and return the predicted digit."""
+def predict_image(image_path: str) -> tuple[int, float]:
+    """
+    Run prediction on a given image path and return:
+    - predicted digit (int)
+    - confidence (float between 0 and 1)
+    """
     image = Image.open(image_path).convert("L")
     image = transform(image).unsqueeze(0)  # add batch dimension
+
     with torch.no_grad():
         output = model(image)
-        pred = output.argmax(dim=1).item()
-    return pred
+        probabilities = F.softmax(output, dim=1)
+        confidence, predicted_class = torch.max(probabilities, dim=1)
+
+    return predicted_class.item(), confidence.item()
