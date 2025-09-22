@@ -1,6 +1,6 @@
 import os
 import pytest
-from model import predict_image
+from .model import predict_image
 
 def test_model_file_exists():
     """Check that the trained model file exists."""
