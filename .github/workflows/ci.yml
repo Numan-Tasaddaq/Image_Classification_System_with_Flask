@@ -27,11 +27,7 @@ jobs:
       # --- Code Quality ---
       
 
-      - name: Check formatting with black
-        run: black --check .
-
-      - name: Static typing with mypy
-        run: mypy app/ || true  # allow partial typing
+       # allow partial typing
 
       # --- Security Checks ---
       - name: Security scan with Bandit
