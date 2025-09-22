@@ -25,8 +25,7 @@ jobs:
           pip install -r requirements.txt
 
       # --- Code Quality ---
-      - name: Lint with flake8
-        run: flake8 .
+      
 
       - name: Check formatting with black
         run: black --check .

@@ -26,4 +26,5 @@ def train_model():
     print(" Model trained and saved at models/mnist_cnn.pth")
 
 if __name__ == "__main__":
+    
     train_model()
