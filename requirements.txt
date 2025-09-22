@@ -1,18 +1,18 @@
 # --- Core dependencies ---
-Flask==2.2.5
-gunicorn==20.1.0
-torch==2.1.0
-torchvision==0.16.0
-Pillow==10.0.0
+Flask
+gunicorn
+torch
+torchvision
+Pillow
 
 # --- Testing ---
-pytest==7.4.0
+pytest
 
 # --- Code Quality (CI) ---
-flake8==6.1.0
-black==23.7.0
-mypy==1.5.1
+flake8
+black
+mypy
 
 # --- Security (Optional but good practice) ---
-bandit==1.7.5
-safety==2.3.5
+bandit
+safety
