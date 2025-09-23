@@ -38,4 +38,5 @@ jobs:
 
       # --- Tests ---
       - name: Run tests
-        run: pytest tests/ --maxfail=1 --disable-warnings -q
+        run: PYTHONPATH=. pytest tests/ --maxfail=1 --disable-warnings -q
+
